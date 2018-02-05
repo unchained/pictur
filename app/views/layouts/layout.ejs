@@ -6,13 +6,12 @@
     <title><%- title %></title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
-<body class="page-<%=pageName %>">
+<body class="page-<%= pageName %>">
 <% include ../header %>
 <main>
     <%- body %>
 </main>
-<% include ../footer %>
-<%-defineContent('block__scripts')%>
+<%- defineContent('block__scripts') %>
 <script src="/js/client.js"></script>
 </body>
 </html>

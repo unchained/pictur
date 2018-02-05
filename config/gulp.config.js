@@ -17,6 +17,12 @@ module.exports = {
       notify: true,
     },
   },
+  copyFiles: [
+    'src/fonts/**/*.*',
+    'src/img/**/*.*',
+    'src/browserconfig.xml',
+    'src/manifest.json',
+  ],
   html: {
     src: 'app/views',
     ext: `.${projectConfig.viewEngine}`,
@@ -74,7 +80,9 @@ module.exports = {
       /**
        * Paths to the scss packages from node_modules go below.
        */
-      includePaths: [],
+      includePaths: [
+        'node_modules/normalize.css/',
+      ],
     },
   },
 };

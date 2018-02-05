@@ -2,23 +2,48 @@
 *   Global classes
 **/
 
+.hidden {
+  display: none;
+}
 
 /**
 *   General page styles
 **/
 
-html{
-
+html {
+  height: 100%;
 }
 
 body {
-
+  height: 100%;
 }
 
-a{
+a {
   text-decoration: none;
   color: inherit;
-  &:hover, &:focus{
+
+  &:hover,
+  &:focus {
     color: inherit;
   }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+}
+
+main {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr;
+  height: 100%;
+}
+
+section{
+  text-align: center;
 }

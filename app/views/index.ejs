@@ -1,6 +1,7 @@
-<% include header %>
-
-  <h1><%-title %></h1>
-  <p>Welcome to <%-title %></p>
-
-<% include footer %>
+<section class="section--drop_area">
+    <form action="/upload" method="post">
+        <h1>Slap your pictures here</h1>
+        <label for="image-upload" class="button">Choose a file...</label>
+        <input id="image-upload" name="image" type="file" accept="image/*" class="hidden">
+    </form>
+</section>

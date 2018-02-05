@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const compress = require('compression');
 const methodOverride = require('method-override');
+const expressLayouts = require('express-ejs-layouts');
 
 module.exports = (app, config) => {
   app.locals.ENV = config.env;
@@ -12,6 +13,8 @@ module.exports = (app, config) => {
 
   app.set('views', `${config.root}/app/views`);
   app.set('view engine', config.viewEngine);
+  app.use(expressLayouts);
+  app.set('layout', 'layouts/layout');
 
   // app.use(favicon(config.root + '/public/img/favicon.ico'));
   app.use(logger('dev'));

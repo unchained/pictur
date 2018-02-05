@@ -7,6 +7,14 @@ module.exports = (app) => {
 
 router.get('/', (req, res, next) => {
   res.render('index', {
-    title: 'Generator-Express MVC',
+    title: 'Pictur - free picture sharing',
+    pageName: 'index',
+  });
+});
+
+router.get('/success', (req, res, next) => {
+  res.render('success', {
+    title: 'Pictur - free picture sharing',
+    pageName: 'success',
   });
 });

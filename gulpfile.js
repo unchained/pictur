@@ -51,7 +51,7 @@ class Flow extends GulpClass {
      * All tasks which are accessible via "gulp <taskName>" are defined here.
      */
     return {
-      build: gulp.series(this.clean, gulp.parallel(this.styles, this.scripts)),
+      build: gulp.series(this.clean, gulp.parallel(this.copyFiles, this.styles, this.scripts)),
       nodemon: gulp.series(this.server),
       server: gulp.series(this.server, this.startBrowserSync, (done) => {
         done();
@@ -79,7 +79,7 @@ class Flow extends GulpClass {
    * Runs everything we need to do with JS.
    */
   scripts() {
-    return gulp.src([path.join(gulpOptions.js.src, '/index.js')])
+    return gulp.src([path.join(gulpOptions.js.src, '/client.js')])
       .pipe(gulpPlugins.plumber())
       .pipe(gulpPlugins.named())
       .pipe(gulpPlugins.webpack(require('./config/webpack.config.js')({
@@ -87,6 +87,15 @@ class Flow extends GulpClass {
         analyze: gulpOptions.analyzeWebpack,
       })))
       .pipe(gulp.dest(gulpOptions.js.dist));
+  }
+
+  /**
+   * Copies specific files defined in gulp options.
+   */
+  copyFiles(done) {
+    gulp.src(gulpOptions.copyFiles, {base: 'src', allowEmpty: true})
+      .pipe(gulp.dest('dist'));
+    done();
   }
 
   /**
