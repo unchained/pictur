@@ -38,21 +38,15 @@ module.exports = (app, config) => {
     next(err);
   });
 
-  if (app.get('env') === 'development') {
-    app.use((err, req, res, next) => {
-      res.status(err.status || 500);
-      res.render('error', {
-        error: err,
-        title: 'error',
-      });
-    });
-  }
-
+  // error handler
   app.use((err, req, res, next) => {
+    // render the error page
     res.status(err.status || 500);
     res.render('error', {
-      error: {},
-      title: 'error',
+      title: 'Pictur - 404 Page not found',
+      pageName: 'error',
+      error: req.app.get('env') === 'development' ? err : {},
+      message: err.message,
     });
   });
 

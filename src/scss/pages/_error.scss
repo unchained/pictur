@@ -1,14 +1,8 @@
-.section--drop_area {
+.section--error {
   grid-column-start: 2;
   grid-column-end: 2;
   grid-row-start: 1;
   grid-row-end: 1;
   justify-self: center;
   align-self: center;
-
-  form {
-    display: block;
-    border: 2px dashed #ccc;
-    padding: 2rem;
-  }
 }

@@ -1,6 +1,3 @@
-@import "../helpers/variables";
-@import "../helpers/mixins";
-
 .section--success {
   grid-column-start: 2;
   grid-column-end: 2;
@@ -8,4 +5,13 @@
   grid-row-end: 1;
   justify-self: center;
   align-self: center;
+
+  &__actions {
+    margin: 1rem 0 2rem 0;
+  }
+  img {
+    max-width: 50%;
+  }
 }
+
+
