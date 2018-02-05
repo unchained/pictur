@@ -1,7 +1,6 @@
 <% include header %>
 
-  <%- message %>
-  <%- error.status %>
-  <%- error.stack %>
-  
+<h1><%- error.status + ' ' + error.message %></h1>
+<p>Something went wrong, please <a href="/">return to homepage</a>.</p>
+
 <% include footer %>
