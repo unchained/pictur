@@ -1,22 +1,18 @@
-/**
-*   Global classes
-**/
-
+// Global classes
 .hidden {
   display: none;
 }
 
-/**
-*   General page styles
-**/
-
+// General page styles
 html {
   height: 100%;
 }
 
 body {
+  background-color: $primary-color;
+  color: $secondary-color;
   height: 100%;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 a {
@@ -45,6 +41,6 @@ main {
   height: 100%;
 }
 
-section{
+section {
   text-align: center;
 }

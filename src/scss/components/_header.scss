@@ -1,7 +1,11 @@
 header {
+  left: 0;
+  padding: rem(30) rem(30);
   position: fixed;
   top: 0;
-  left: 0;
   width: 100%;
-  padding: 1rem 15px;
+
+  .logo {
+    display: block;
+  }
 }
