@@ -1,5 +1,4 @@
 const path = require('path'),
-  del = require('del'),
   chalk = require('chalk'),
   dedent = require('dedent-js'),
   gulp = require('gulp'),
@@ -51,9 +50,9 @@ class Flow extends GulpClass {
      * All tasks which are accessible via "gulp <taskName>" are defined here.
      */
     return {
-      build: gulp.series(this.clean, gulp.parallel(this.copyFiles, this.styles, this.scripts)),
+      build: gulp.parallel(/* this.copyFiles, */this.vue),
       nodemon: gulp.series(this.server),
-      server: gulp.series(this.server, this.startBrowserSync, (done) => {
+      server: gulp.series('nodemon', this.startBrowserSync, (done) => {
         done();
       }),
       deploy: gulp.series('build'),
@@ -62,24 +61,10 @@ class Flow extends GulpClass {
   }
 
   /**
-   * Runs everything we need to do with CSS.
+   * Runs everything we need to do with Vue. Compiles Vue templates including SCSS via webpack
    */
-  styles() {
-    return gulp.src([path.join(gulpOptions.styles.path.scss, '/**/*.scss')])
-      .pipe(gulpPlugins.plumber())
-      .pipe(gulpPlugins.sourcemaps.init())
-      .pipe(gulpPlugins.sass(gulpOptions.styles.sassOptions).on('error', gulpPlugins.sass.logError))
-      .pipe(gulpPlugins.autoprefixer({browsers: gulpOptions.styles.autoprefixerCompatibility}))
-      .pipe(gulpPlugins.sourcemaps.write('.'))
-      .pipe(gulp.dest(gulpOptions.styles.path.css))
-      .pipe(gulpPlugins.browserSync.stream({match: '**/*.{css|map}'}));
-  }
-
-  /**
-   * Runs everything we need to do with JS.
-   */
-  scripts() {
-    return gulp.src([path.join(gulpOptions.js.src, '/client.js')])
+  vue() {
+    return gulp.src(gulpOptions.js.src + gulpOptions.js.entryFile)
       .pipe(gulpPlugins.plumber())
       .pipe(gulpPlugins.named())
       .pipe(gulpPlugins.webpack(require('./config/webpack.config.js')({
@@ -93,7 +78,7 @@ class Flow extends GulpClass {
    * Copies specific files defined in gulp options.
    */
   copyFiles(done) {
-    gulp.src(gulpOptions.copyFiles, {base: 'src', allowEmpty: true})
+    gulp.src(gulpOptions.copyFiles, { base: 'src', allowEmpty: true })
       .pipe(gulp.dest('dist'));
     done();
   }
@@ -103,9 +88,10 @@ class Flow extends GulpClass {
    * @param {function} [done] - An automatically assigned and invoked callback to signal asynchronous completion (do not use!)
    */
   watch(done) {
-    gulp.watch(path.join(gulpOptions.styles.path.scss, '/**/*.scss'), this.styles);
-    gulp.watch(path.join(gulpOptions.html.src, `/**/*${gulpOptions.html.ext}`), gulp.series(this.reload));
-    gulp.watch(path.join(gulpOptions.js.src, '**/*.js'), gulp.series(this.scripts, this.reload));
+    gulp.watch(path.join(gulpOptions.styles.src, '/**/*.scss'), gulp.series(this.vue, this.reload)); // SCSS recompile & reload
+    gulp.watch(path.join(gulpOptions.html.client.src, `**/*${gulpOptions.html.client.ext}`), gulp.series(this.vue, this.reload)); // Vue templates
+    gulp.watch(path.join(gulpOptions.html.server.src, `**/*${gulpOptions.html.server.ext}`), gulp.series(this.reload)); // EJS templates
+    gulp.watch([path.join(gulpOptions.js.src, '**/*.js'), `!${path.join(gulpOptions.js.src, '**/*.min.js')}`], gulp.series(this.vue, this.reload)); // JS general logic
     done();
   }
 
@@ -117,6 +103,8 @@ class Flow extends GulpClass {
   /**
    *      ========= BrowserSync =========
    */
+
+  // TODO: move BrowserSync to webpack?
 
   /**
    * Starts the browsersync proxy server
@@ -175,18 +163,6 @@ class Flow extends GulpClass {
             `)));
       server.emit('restart', 5); // restart the server in 5 seconds
     });
-  }
-
-  /**
-   *      ======== Misc ========
-   */
-
-  /**
-   * cleans the dist directory
-   */
-  clean(done) {
-    del.sync('dist');
-    done();
   }
 }
 

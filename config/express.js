@@ -11,7 +11,7 @@ module.exports = (app, config) => {
   app.locals.ENV = config.env;
   app.locals.ENV_DEVELOPMENT = config.env === 'development';
 
-  app.set('views', `${config.root}/app/views`);
+  app.set('views', `${config.root}/server/views`);
   app.set('view engine', config.viewEngine);
   app.use(expressLayouts);
   app.set('layout', 'layouts/layout');
@@ -24,18 +24,16 @@ module.exports = (app, config) => {
   }));
   app.use(cookieParser());
   app.use(compress());
-  app.use(express.static(`${config.root}/dist`));
+  app.use(express.static(`${config.root}/app`));
   app.use(methodOverride());
 
-  const controllers = glob.sync(`${config.root}/app/controllers/*.js`);
+  const controllers = glob.sync(`${config.root}/server/controllers/*.js`);
   controllers.forEach((controller) => {
     require(controller)(app);
   });
 
   app.use((req, res, next) => {
-    const err = new Error('Not Found');
-    err.status = 404;
-    next(err);
+    res.redirect(303, '/');
   });
 
   // error handler
@@ -43,7 +41,7 @@ module.exports = (app, config) => {
     // render the error page
     res.status(err.status || 500);
     res.render('error', {
-      title: 'Pictur - 404 Page not found',
+      title: 'Pictur - Server error',
       pageName: 'error',
       error: req.app.get('env') === 'development' ? err : {},
       message: err.message,
