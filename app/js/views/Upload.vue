@@ -1,0 +1,23 @@
+<template>
+    <section class="section--success">
+        <h1>URL to your image:</h1>
+        <label for="generated-url" class="hidden">Your generated URL:</label>
+        <input id="generated-url" name="url" type="url" class="form-input" autocomplete="off" autofocus="autofocus" value="pictur.es/WuuewUSDB" readonly="readonly">
+        <div class="section--success__actions">
+            <a href="#">Undo</a>
+            <small>or</small>
+            <a href="/">Upload another</a>
+        </div>
+        <img src="/img/placeholder.jpg" alt="thumbnail of your image">
+    </section>
+</template>
+
+<script>
+  export default {
+    name: "upload"
+  }
+</script>
+
+<style scoped lang="scss">
+
+</style>

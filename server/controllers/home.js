@@ -11,10 +11,3 @@ router.get('/', (req, res, next) => {
     pageName: 'index',
   });
 });
-
-router.get('/success', (req, res, next) => {
-  res.render('success', {
-    title: 'Pictur - free picture sharing',
-    pageName: 'success',
-  });
-});

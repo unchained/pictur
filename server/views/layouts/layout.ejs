@@ -10,14 +10,11 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
     <!-- <link href="https://fonts.googleapis.com/css?family=Lato:300,400,500,700" rel="preload" as="style">
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,500,700" rel="stylesheet"> -->
-    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body class="page-<%= pageName %>">
 <% include ../header %>
-<main>
-    <%- body %>
-</main>
+<%- body %>
 <%- defineContent('block__scripts') %>
-<script src="/js/client.js"></script>
+<script src="/js/client.min.js"></script>
 </body>
 </html>

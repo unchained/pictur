@@ -1,4 +1,5 @@
 const webpack = require('webpack-stream');
+const path = require('path');
 
 module.exports = (options = {}) => {
   options = {
@@ -11,15 +12,62 @@ module.exports = (options = {}) => {
 
   return {
     output: {
-      filename: '[name].js',
+      filename: 'client.min.js',
+    },
+    resolve: {
+      alias: {
+        vue$: 'vue/dist/vue.esm.js',
+      },
     },
     module: {
       rules: [
         {
           test: /\.js?$/,
           loader: 'babel-loader',
+          exclude: /node_modules/,
           query: {
             presets: ['env'],
+          },
+        },
+        {
+          test: /\.vue$/,
+          loader: 'vue-loader',
+          options: {
+            loaders: {
+              scss: [
+                'vue-style-loader',
+                {
+                  loader: 'css-loader',
+                  options: {
+                    sourceMap: true,
+                  },
+                },
+                {
+                  loader: 'postcss-loader',
+                  options: {
+                    sourceMap: true,
+                    config: {
+                      path: path.resolve(__dirname, './postcss.config.js'),
+                    },
+                  },
+                },
+                {
+                  loader: 'sass-loader',
+                  options: {
+                    sourceMap: true,
+                    includePaths: [
+                      'node_modules/normalize.css',
+                    ],
+                  },
+                },
+                // {
+                //   loader: 'sass-resources-loader',
+                //   options: {
+                //     resources: [],
+                //   },
+                // },
+              ],
+            },
           },
         },
       ],
