@@ -8,6 +8,7 @@ const config = {
    */
   general: {
     root: rootPath,
+    uploadsPath: path.join(rootPath, '/uploads/images'),
     app: {
       name: 'unchained-studio',
     },
@@ -31,7 +32,7 @@ const config = {
 };
 
 function getConfig(env) {
-  return {...config.general, ...config[env]};
+  return { ...config.general, ...config[env] };
 }
 
 module.exports = getConfig(env);

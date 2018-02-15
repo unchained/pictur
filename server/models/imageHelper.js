@@ -4,14 +4,18 @@ const config = require('../../config/config'),
   path = require('path');
 
 class ImageHelper {
+  constructor() {
+    this.uploadsPath = config.uploadsPath;
+  }
+
   // Get image by imageId
   // TODO return Image object
   getImageById(imageId) {
-    const images = glob.sync(path.join(config.root, `/uploads/images/${imageId}.*`));
+    const images = glob.sync(path.join(this.uploadsPath, `${imageId}.*`));
 
     if (images.length === 1) {
-      const imageExtension = images[0].split('.').pop();
-      return new Image(imageId, `${imageId}.${imageExtension}`);
+      const imageExtension = path.extname(images[0]);
+      return new Image(imageId, imageId + imageExtension);
     } else {
       throw new Error('Requested image was not found.');
     }
@@ -24,7 +28,7 @@ class ImageHelper {
     const imageName = imageId + path.extname(file.name);
 
     try {
-      file.path = path.join(config.root, '/uploads/images/', imageName);
+      file.path = path.join(this.uploadsPath, imageName);
     } catch (e) {
       throw new Error('Something went wrong during image upload.');
     }
