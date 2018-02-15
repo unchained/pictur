@@ -27,6 +27,8 @@ class Client {
       {
         path: '/upload',
         component: Upload,
+        name: 'upload',
+        props: true,
       },
       { path: '*', redirect: '/' }, // Handle potential fuckups in component routing
     ];

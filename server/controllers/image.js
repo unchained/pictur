@@ -1,6 +1,8 @@
 const express = require('express'),
   formidable = require('formidable'),
+  path = require('path'),
   ImageHelper = require('../models/imageHelper'),
+  config = require('../../config/config'),
   router = express.Router();
 
 module.exports = (app) => {
@@ -22,23 +24,26 @@ router.post('/upload', (req, res, next) => {
   });
 
   form.on('end', () => {
-    res.redirect(`/api/image/${imageId}`);
+    res.json({ // TODO: send the whole image object
+      url: `/api/image/${imageId}`,
+    });
   });
 });
 
-// TODO: pass data to Vue.js template and you are done
 router.get('/:imageId', (req, res, next) => {
+  const options = {
+    root: config.uploadsPath,
+    dotfiles: 'deny',
+    headers: {
+      'x-timestamp': Date.now(),
+      'x-sent': true,
+    },
+  };
   try {
     const image = ImageHelper.getImageById(req.params.imageId);
-    res.render('imageFound', {
-      pageName: 'imageFound',
-      title: 'Image found',
-      image,
-    });
+    res.sendFile(image.filename, options);
   } catch (e) {
-    res.render('imageNotFound', {
-      pageName: 'imageNotFound',
-      title: 'Image not found',
-    });
+    options.root = path.resolve(options.root, '../');
+    res.status(404).sendFile('404.jpg', options);
   }
 });

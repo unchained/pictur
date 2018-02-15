@@ -1,20 +1,54 @@
 <template>
     <section class="drop-zone">
-        <form action="/api/image/upload" enctype="multipart/form-data" method="post" id="image-upload-form" class="image-upload">
+        <form ref="imageUploadForm" v-on:submit.prevent="onFormSubmit" action="/api/image/upload" enctype="multipart/form-data" method="post" id="image-upload-form" class="image-upload">
             <img src="img/icons/icon-image.svg" alt="Picture icon" class="image-upload__icon">
             <h1 class="image-upload__heading">Slap your pictures here</h1>
             <div class="image-upload__divider">or</div>
             <label for="image-upload-input" class="image-upload__button">Upload image</label>
-            <input v-on:change="submitForm()" id="image-upload-input" name="image" type="file" accept="image/*" class="hidden">
+            <input v-on:change="submitForm" id="image-upload-input" name="image" type="file" accept="image/*" class="hidden">
+            <input type="submit" hidden="hidden">
         </form>
     </section>
 </template>
 
 <script>
+  import axios from 'axios';
+
   export default {
     methods: {
-      submitForm: () => {
-        document.getElementById('image-upload-form').submit();
+      submitForm() {
+        this.$refs.imageUploadForm.dispatchEvent(new Event('submit', {
+          'bubbles': true,
+          'cancelable': true
+        }));
+      },
+      onFormSubmit(e) {
+        const form = e.target;
+        axios({
+          url: form.getAttribute('action'),
+          method: form.getAttribute('method'),
+          responseType: 'json',
+          headers: {
+            'Content-Type': form.getAttribute('enctype')
+          },
+          data: new FormData(form),
+          onUploadProgress: this.onUploadProgress
+        }).then((res) => {
+          console.log(res.data);
+          this.$router.replace({
+            name: 'upload',
+            params: res.data
+          });
+        }).catch((err) => {
+          alert('Error in image submission ');
+        });
+      },
+      onUploadProgress(event) {
+        console.log('progress');
+        if (event.lengthComputable) {
+          event.percent = (event.loaded / event.total) * 100;
+          console.log(event.percent);
+        }
       }
     }
   }

@@ -2,16 +2,18 @@
     <section class="section--success">
         <h1>URL to your image:</h1>
         <label for="generated-url" class="hidden">Your generated URL:</label>
-        <input name="url" id="generated-url" class="section--success__url" type="url" autocomplete="off" autofocus="autofocus" value="pictur.es/WuuewUSDB" readonly="readonly">
-        <img src="/img/placeholder.jpg" alt="thumbnail of your image">
+        <input name="url" id="generated-url" class="section--success__url" type="url" autocomplete="off" autofocus="autofocus" v-bind:value="url" readonly="readonly">
+        <img v-bind:src="url" alt="Your image">
         <div class="section--success__actions">
-            <a href="/">Upload another</a>
+            <router-link to="/">Upload another</router-link>
         </div>
     </section>
 </template>
 
 <script>
-  export default {}
+  export default {
+    props: ['url']
+  }
 </script>
 
 <style scoped lang="scss">
@@ -39,6 +41,7 @@
             box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
             display: block;
             max-width: 50%;
+            max-height: 150px;
         }
     }
 
