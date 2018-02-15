@@ -10,8 +10,7 @@ function ImageHelper() {
 // Get image by imageId
 // TODO return Image object
 ImageHelper.prototype.getImageById = (imageId) => {
-  console.log(glob.readdirSync(`/uploads/images/${imageId}*`));
-  console.log(images);
+  let images = glob.readdirSync(`/uploads/images/${imageId}*`);
 
   if (images.length === 1) {
     let imageExtension = images[0].split('.').pop();
