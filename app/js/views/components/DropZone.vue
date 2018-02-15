@@ -1,17 +1,23 @@
 <template>
     <section class="drop-zone">
-        <form action="/upload" method="post" class="image-upload">
+        <form action="/api/image/upload" enctype="multipart/form-data" method="post" id="image-upload-form" class="image-upload">
             <img src="img/icons/icon-image.svg" alt="Picture icon" class="image-upload__icon">
             <h1 class="image-upload__heading">Slap your pictures here</h1>
             <div class="image-upload__divider">or</div>
-            <label for="image-upload" class="image-upload__button">Upload image</label>
-            <input id="image-upload" name="image" type="file" accept="image/*" class="hidden">
+            <label for="image-upload-input" class="image-upload__button">Upload image</label>
+            <input v-on:change="submitForm()" id="image-upload-input" name="image" type="file" accept="image/*" class="hidden">
         </form>
     </section>
 </template>
 
 <script>
-  export default {}
+  export default {
+    methods: {
+      submitForm: () => {
+        document.getElementById('image-upload-form').submit();
+      }
+    }
+  }
 </script>
 
 <style scoped lang="scss">
