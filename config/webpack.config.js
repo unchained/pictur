@@ -60,12 +60,15 @@ module.exports = (options = {}) => {
                     ],
                   },
                 },
-                // {
-                //   loader: 'sass-resources-loader',
-                //   options: {
-                //     resources: [],
-                //   },
-                // },
+                {
+                  loader: 'sass-resources-loader',
+                  options: {
+                    resources: [
+                      path.resolve('__dirname', '../app/scss/helpers/_variables.scss'),
+                      path.resolve('__dirname', '../app/scss/helpers/_mixins.scss')
+                    ],
+                  },
+                },
               ],
             },
           },

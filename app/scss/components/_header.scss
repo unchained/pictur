@@ -1,11 +1,22 @@
 header {
+  box-sizing: border-box;
   left: 0;
   padding: rem(30) rem(30);
   position: fixed;
   top: 0;
   width: 100%;
 
+  @media (max-width: 640px) {
+    padding: rem(15) rem(15);
+  }
+
   .logo {
     display: block;
+
+    img {
+      @media (max-width: 640px) {
+        width: 110px;
+      }
+    }
   }
 }

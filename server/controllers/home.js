@@ -7,7 +7,7 @@ module.exports = (app) => {
 
 router.get('/', (req, res, next) => {
   res.render('index', {
-    title: 'Pictur - free picture sharing',
+    title: 'Pictr - free picture sharing',
     pageName: 'index',
   });
 });

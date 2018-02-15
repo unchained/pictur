@@ -12,7 +12,8 @@ body {
   background-color: $primary-color;
   color: $secondary-color;
   height: 100%;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
+  position: relative;
 }
 
 a {
@@ -35,10 +36,17 @@ h6 {
 }
 
 main {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 1fr;
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
   height: 100%;
+  padding: rem($header-height + 30) rem(30);
+
+  @media (max-width: 640px) {
+    padding: rem($header-height-small + 15) rem(15);
+  }
 }
 
 section {
