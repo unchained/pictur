@@ -28,9 +28,18 @@ router.post('/upload', (req, res, next) => {
 
 // TODO: pass data to Vue.js template and you are done
 router.get('/:imageId', (req, res, next) => {
-  let image = ImageHelper.getImageById(req.params.imageId);
 
-  console.log(image);
-
-  res.redirect('/index');
+  try {
+    let image = ImageHelper.getImageById(req.params.imageId);
+    res.render('imageFound', {
+      pageName: 'imageFound',
+      title: "Image found",
+      image: image
+    });
+  } catch (e) {
+    res.render('imageNotFound', {
+      pageName: 'imageNotFound',
+      title: "Image not found"
+    });
+  }
 });

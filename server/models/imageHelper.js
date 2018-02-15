@@ -1,16 +1,17 @@
-function ImageHelper() {
-
-}
-
 const config = require('../../config/config'),
     glob = require('glob-fs')({gitignore: false}),
     Image = require('./image'),
     fs = require('fs');
 
+function ImageHelper() {
+
+}
+
 // Get image by imageId
 // TODO return Image object
 ImageHelper.prototype.getImageById = (imageId) => {
-  let images = glob.readdirSync(`/uploads/images/${imageId}.*`);
+  console.log(glob.readdirSync(`/uploads/images/${imageId}*`));
+  console.log(images);
 
   if (images.length === 1) {
     let imageExtension = images[0].split('.').pop();
