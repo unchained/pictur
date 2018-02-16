@@ -1,5 +1,5 @@
 <template>
-    <section class="drop-zone">
+    <section class="drop-zone" id="dropZone">
         <form ref="imageUploadForm" v-on:submit.prevent="onFormSubmit" action="/api/image/upload" enctype="multipart/form-data" method="post" id="image-upload-form" class="image-upload">
             <img src="img/icons/icon-image.svg" alt="Picture icon" class="image-upload__icon">
             <h1 class="image-upload__heading">Slap your pictures here</h1>
@@ -8,6 +8,7 @@
             <input v-on:change="submitForm" id="image-upload-input" name="image" type="file" accept="image/*" class="hidden">
             <input type="submit" hidden="hidden">
         </form>
+        <img src="img/icons/icon-arrow.svg" alt="Arrow icon" class="drop-zone__arrow">
     </section>
 </template>
 
@@ -15,6 +16,26 @@
   import axios from 'axios';
 
   export default {
+    mounted() {
+      const target = document.getElementById('dropZone');
+      const fileInput = document.getElementById('image-upload-input');
+
+      target.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        target.classList.add('drag');
+      });
+
+      target.addEventListener('dragleave', () => {
+        target.classList.remove('drag');
+      });
+
+      target.addEventListener('drop', (e) => {
+        e.preventDefault();
+        target.classList.remove('drag');
+
+        fileInput.files = e.dataTransfer.files;
+      });
+    },
     methods: {
       submitForm() {
         this.$refs.imageUploadForm.dispatchEvent(new Event('submit', {
@@ -59,16 +80,45 @@
         border: rem(2) dashed $secondary-color;
         border-radius: rem(20);
         padding: rem(65) rem(35);
+        position: relative;
+        transition: background 250ms ease;
+
+        &__arrow {
+            left: 50%;
+            opacity: 0;
+            pointer-events: none;
+            position: absolute;
+            top: 50%;
+            transform: translate3d(-50%, -50%, 0) scale(0.75);
+            transition: opacity 250ms ease, transform 250ms ease;
+            width: rem(50);
+        }
 
         @media (max-width: 640px) {
             border: none;
+        }
+
+        &.drag {
+            background: $secondary-color;
+
+            .drop-zone__arrow {
+                opacity: 1;
+                transform: translate3d(-50%, -50%, 0) scale(1);
+            }
+
+            .image-upload {
+                transform: scale(0.75);
+                opacity: 0;
+            }
         }
     }
 
     .image-upload {
         align-items: center;
+        backface-visibility: hidden;
         display: flex;
         flex-direction: column;
+        transition: opacity 250ms ease, transform 250ms ease;
 
         &__icon {
             margin-bottom: rem(25);
